@@ -1,7 +1,7 @@
 # Scotland Yard
 
 ## Official Problem Statement
-git@github.com:HighonPi/studentssl21outlab7.git
+https://docs.google.com/document/d/e/2PACX-1vTjAF4XiO_He_PF9mH9fJ0jVkaH9TSYTAn837aOAMGaKxpcQjHZZkXFj2l_RoWrJI9-g1b6MDdpizSV/pub
 
 ## The Game
 -----------
