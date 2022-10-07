@@ -8,7 +8,7 @@ import java.util.concurrent.Semaphore;
 
 public class Moderator implements Runnable{
 	private Board board;
-	
+
 	public Moderator(Board board){
 		this.board = board;
 	}
@@ -23,8 +23,8 @@ public class Moderator implements Runnable{
 
 				*/
                                           
-                                             
-
+                board.moderatorEnabler.acquire();                        
+				board.threadInfoProtector.acquire();
 
 				/* 
 				look at the thread info, and decide how many threads can be 
@@ -43,17 +43,16 @@ public class Moderator implements Runnable{
 
 				//base case
 				
-				if (this.board.embryo){
+				if (this.board.embryo){ //.Not sure If I wrote the base case properly
 					                              
-                                        
-                                   
+                    board.threadInfoProtector.release();               
                                               
 					continue;
 				}
 				
 				
 				//find out how many newbies
-				int newbies = ;
+				int newbies = board.totalThreads - board.playingThreads + board.quitThreads;
 
 
 				/*
@@ -65,9 +64,13 @@ public class Moderator implements Runnable{
 				As good practice, we will release the "lock" we held. 
 				*/
 
-				                                  
-                                              
-            
+				if(board.totalThreads==0)
+				{
+					this.board.dead = true;
+					board.threadInfoProtector.release();
+					//. board.moderatorEnabler.release(); //.Not sure, skeptic yet
+					break;
+				}
      
 				
 				/* 
@@ -78,14 +81,19 @@ public class Moderator implements Runnable{
 				reset quitThreads
 
 
-				Release permits for threads to play, and the permit to modify thread info
+				Release permits for threads to play both re entry and registration, and the permit to modify thread info
 				*/
 
-				                                                    
-                               
-    
-                                             
-                                                          
+				board.playingThreads = board.totalThreads;
+				board.quitThreads = 0;
+
+				//.Threads playing their first round (newbies) need registration. All threads playing the round need reentry.
+				if(newbies>0) board.registration.release(newbies);
+				board.reentry.release(board.playingThreads);
+				//.Note sure if release() is the right function
+				//.But what happens if they release the 5 tickets in this round and if the threads accept and close then in the next round there would be a problem
+				//.Because release() does not the set the number of permits it increments it by that amount
+				board.threadInfoProtector.release();
                                              
 			}
 			catch (InterruptedException ex){

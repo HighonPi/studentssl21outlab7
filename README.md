@@ -1,5 +1,8 @@
 # Scotland Yard
 
+## Official Problem Statement
+git@github.com:HighonPi/studentssl21outlab7.git
+
 ## The Game
 -----------
 The city is an **8 x 8** grid, a Fugitive runs amok. In a single turn, the Fugitive can move like a chess Queen: horizontally, vertically, or diagonally. Upto k (say, 5, but that’s easily winning for a smart Fugitive. You can tweak this) Detectives attempt to catch the Fugitive. Detectives move like chess Rooks: horizontally, or vertically. In this game, Players don’t block each others’ paths. 
